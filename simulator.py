@@ -28,6 +28,14 @@ class TrafficController:
 
           self.current_green=None
 
+          self.threshold_queue= deque()
+          self.threshold_reached=set()
+
+          self.active_lane= None
+
+
+          self.blink_state = True
+          self.blink_timer=0
           
                 
 
