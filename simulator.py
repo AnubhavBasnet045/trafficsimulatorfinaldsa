@@ -57,4 +57,22 @@ CENTER=450
 ROAD_WIDTH=140
 CAR_GAP=45
 
+def draw_roads():
+     pygame.draw.rect(screen, ROAD, (CENTER -ROAD_WIDHT//2,0, ROAD_WIDTH, 900))
+     pygame.draw.rect(screen, ROAD, (0, CEMNTER -ROAD_WIDTH//2, 900, ROAD_WIDTH))
+     pygame.draw.rect(
+          screen, JUNCTION,
+          (CENTER -ROAD_WIDTH//2, CENTER - ROAD_WIDTH//2, ROAD_WIDTH, ROAD_WIDTH)
+     )
 
+def signal_color(lane_name):
+     if controller.active_lane==lane_name:
+          return Green if controller.blonk_state else RED
+     return RED
+
+def draw_signals():
+     pygame.draw.circle(screen, signal_color("AL2"), (CENTER - 30, CENTER - 90),10)
+     pygame.draw.circle(screen, signal_color("BL2"),(CENTER + 30, CENTER + 90), 10)
+     pygame.draw.circle(screen, signal_color("CL2"),(CENTER + 90, CENTER - 30), 10)
+     pygame.draw.circle(screen, signal_color("DL2"),(CENTER - 90, CENTER + 30), 10)
+     
