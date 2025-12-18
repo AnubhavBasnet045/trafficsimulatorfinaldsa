@@ -38,5 +38,23 @@ class TrafficController:
           self.blink_timer=0
           
                 
+#-------FRONTEND----------
+pygame.init()
+screen=pygame.display.set_mode((900,900))
+pygame.display.set_caption("Traffic Junction with Priority Queue")
+clock=pygame.time.Clock()
+
+WHITE=(255,255,255)
+ROAD=(40,40,40)
+JUNCTION=(70,70,70)
+RED=(220,60,60)
+GREEN=(60,200,60)
+CAR=(30,30,200)
+
+controller =TrafficController()
+
+CENTER=450
+ROAD_WIDTH=140
+CAR_GAP=45
 
 
