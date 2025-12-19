@@ -58,8 +58,8 @@ ROAD_WIDTH=140
 CAR_GAP=45
 
 def draw_roads():
-     pygame.draw.rect(screen, ROAD, (CENTER -ROAD_WIDHT//2,0, ROAD_WIDTH, 900))
-     pygame.draw.rect(screen, ROAD, (0, CEMNTER -ROAD_WIDTH//2, 900, ROAD_WIDTH))
+     pygame.draw.rect(screen, ROAD, (CENTER - ROAD_WIDHT//2,0, ROAD_WIDTH, 900))
+     pygame.draw.rect(screen, ROAD, (0, CEMNTER - ROAD_WIDTH//2, 900, ROAD_WIDTH))
      pygame.draw.rect(
           screen, JUNCTION,
           (CENTER -ROAD_WIDTH//2, CENTER - ROAD_WIDTH//2, ROAD_WIDTH, ROAD_WIDTH)
@@ -75,4 +75,19 @@ def draw_signals():
      pygame.draw.circle(screen, signal_color("BL2"),(CENTER + 30, CENTER + 90), 10)
      pygame.draw.circle(screen, signal_color("CL2"),(CENTER + 90, CENTER - 30), 10)
      pygame.draw.circle(screen, signal_color("DL2"),(CENTER - 90, CENTER + 30), 10)
+
+def draw_vehicles():
+     for i in range(controller.lanes["AL2"].size()):
+          pygame.draw.rect(screen, CAR, (CENTER - 20, CENTER - 120 - i*CAR_GAP , 25, 40))
+
+     for i in range(controller.lanes["BL2"].size()):
+          pygame.draw.rect(screen, CAR, (CENTER + 5, CENTER +80 + i*CAR_GAP, 25, 40))
+
+     for i in range( controller.lanes["CL2"].size()):
+          pygame.draw.rect(screen, CAR, (CENTER + 80 + i*CAR_GAP, CENTER - 20, 40 , 25))
+
+     for i in range(controller.lanes["DL2"].size()):
+          pygame.draw.rect(screen, CAR, (CENTER - 120 - i*CAR_GAP, CENTER + 5, 40 , 25)) 
+                        
+            
      
