@@ -1,4 +1,8 @@
+import pygame
+import sys
+import random
 from collections import deque
+import heapq
 #----BACKEND---------
 
 class lane:
@@ -36,7 +40,26 @@ class TrafficController:
 
           self.blink_state = True
           self.blink_timer=0
-          
+
+     def generate_traffic(self):
+          for name, lane in self.lanes.items():
+
+               if name== self.active_lane:
+                    continue
+               if random.random() < 0.6:
+                    lane.add_vehicle()
+
+               if lane.size()== 10 and name not in self.threshold_reached:
+                    self.arrival_counter += 1
+
+                    priority_value = lane.size()+lane.base_priority *5
+
+                    heapq.heappush(
+                         self.priority_heap,
+                         (-priority_value, self.arrival_counter, name)
+                    )          
+
+                    self.threshold_reached.add(name)
                 
 #-------FRONTEND----------
 pygame.init()
@@ -88,6 +111,6 @@ def draw_vehicles():
 
      for i in range(controller.lanes["DL2"].size()):
           pygame.draw.rect(screen, CAR, (CENTER - 120 - i*CAR_GAP, CENTER + 5, 40 , 25)) 
-                        
+
             
      
