@@ -32,7 +32,7 @@ class TrafficController:
                "Dl2": Lane("Dl2", "right"),
           }
 
-          self.current_green=None
+         
           self.arrival_counter=0
 
           self.priority_heap=[]
@@ -41,8 +41,6 @@ class TrafficController:
           self.active_lane= None
 
 
-          self.blink_state = True
-          self.blink_timer=0
 
      def generate_traffic(self):
           for name, lane in self.lanes.items():
@@ -54,12 +52,11 @@ class TrafficController:
 
                if lane.size()== 10 and name not in self.threshold_reached:
                     self.arrival_counter += 1
-
-                    priority_value = lane.size()+lane.base_priority *5
+                    priority=lane.size()+ lane.base_priority *5
 
                     heapq.heappush(
                          self.priority_heap,
-                         (-priority_value, self.arrival_counter, name)
+                         (-priority, self.arrival_counter, name)
                     )          
 
                     self.threshold_reached.add(name)
@@ -68,11 +65,21 @@ class TrafficController:
                return self.active_lane
 
           if self.priority_heap:
-               _, _, name = heapq.heappop(self.priority_heap)
-               self.active_lane=name
-               return name
+               _, _, lane_name = heapq.heappop(self.priority_heap)
+               self.active_lane=lane_name
+               return lane_name
 
-          return None               
+          return None           
+     def serve_traffic (self):
+          lane_name=self.choose_lane()
+          if not lane_name:
+               return
+
+          lane = self.lanes[lane_name]
+          lane.serve(3)
+
+          if lane.size()==0:
+               self.active_lane= None    
                 
 #-------FRONTEND----------
 pygame.init()
