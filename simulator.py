@@ -6,14 +6,16 @@ import heapq
 #----BACKEND---------
 
 class lane:
-     def __init__(self, name, direction):
+     def __init__(self, name, direction, base_priority=1):
           self.name=name
           self.queue=deque()
           self.direction= direction
+          self.base_priority = base_priority
+
 
           def add_vehicle(self):
                self.queue.append(1)
-def serve(self, count):
+     def serve(self, count):
         for _ in range(min(count, len(self.queue))):
             self.queue.popleft()
 
@@ -24,15 +26,16 @@ def serve(self, count):
 class TrafficController:
      def __init__(self):
           self.lanes={
-               "AL2": Lane("AL2","down"),
+               "AL2": Lane("AL2","down" ,base_priority=2),
                "BL2": Lane("BL2", "up"),
                "CL2": Lane("Cl2", "left"),
                "Dl2": Lane("Dl2", "right"),
           }
 
           self.current_green=None
+          self.arrival_counter=0
 
-          self.threshold_queue= deque()
+          self.priority_heap=[]
           self.threshold_reached=set()
 
           self.active_lane= None
@@ -60,6 +63,16 @@ class TrafficController:
                     )          
 
                     self.threshold_reached.add(name)
+     def choose_lane(self):
+          if self.active_lane:
+               return self.active_lane
+
+          if self.priority_heap:
+               _, _, name = heapq.heappop(self.priority_heap)
+               self.active_lane=name
+               return name
+
+          return None               
                 
 #-------FRONTEND----------
 pygame.init()
@@ -81,8 +94,8 @@ ROAD_WIDTH=140
 CAR_GAP=45
 
 def draw_roads():
-     pygame.draw.rect(screen, ROAD, (CENTER - ROAD_WIDHT//2,0, ROAD_WIDTH, 900))
-     pygame.draw.rect(screen, ROAD, (0, CEMNTER - ROAD_WIDTH//2, 900, ROAD_WIDTH))
+     pygame.draw.rect(screen, ROAD, (CENTER - ROAD_WIDTH//2,0, ROAD_WIDTH, 900))
+     pygame.draw.rect(screen, ROAD, (0, CENTER - ROAD_WIDTH//2, 900, ROAD_WIDTH))
      pygame.draw.rect(
           screen, JUNCTION,
           (CENTER -ROAD_WIDTH//2, CENTER - ROAD_WIDTH//2, ROAD_WIDTH, ROAD_WIDTH)
