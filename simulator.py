@@ -84,7 +84,7 @@ class TrafficController:
 #-------FRONTEND----------
 pygame.init()
 screen=pygame.display.set_mode((900,900))
-pygame.display.set_caption("Traffic Junction with Priority Queue")
+pygame.display.set_caption("Traffic Junction")
 clock=pygame.time.Clock()
 
 WHITE=(255,255,255)
@@ -99,6 +99,7 @@ controller =TrafficController()
 
 CENTER=450
 LANES_PER_ROADS=3
+LANE_WIDTH=40
 LANES_GAP=10
 ROAD_WIDTH=LANES_PER_RAOD * LANE_WIDTH + (LANES_PER_ROAD -1)* LANES_GAP
 CAR_GAP=45
@@ -110,7 +111,22 @@ def draw_roads():
           screen, JUNCTION,
           (CENTER -ROAD_WIDTH//2, CENTER - ROAD_WIDTH//2, ROAD_WIDTH, ROAD_WIDTH)
      )
-
+def draw_lane_lines():
+     for i in range(1, LANES_PER_ROAD):
+          x=CENTER - ROAD_WIDTH//2 + i* ( LANE_WIDTH + LANE_GAP)-LANE_GAP//2
+          y=0
+          while y <900:
+               if y< CENTER - ROAD_WIDTH //2 or y > CENTER + ROAD_WIDTH//2:
+                    pygame.draw.line(screen, LINE, (x,y),(x, y+20),2)
+               y+=40
+     for i in range(1, Lanes_PER_ROAD):
+          y=CENTER- ROAD_WIDTH//2 + i* (LANE_WIDTH + LANE_GAP)-LANE_GAP//2
+          x=0
+          while x<900:
+               if x< CENTER -ROAD_WIDTH //2 or x> CENTER + ROAD_WIDTH//2:
+                    pygame.draw.line(screen ,LINE, (x,y),(X+20,y),2)
+               x+=40
+                                   
 def signal_color(lane_name):
      if controller.active_lane==lane_name:
           return Green if controller.blonk_state else RED
