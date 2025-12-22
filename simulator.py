@@ -125,22 +125,21 @@ def draw_lane_lines():
           while x<900:
                if x< CENTER -ROAD_WIDTH //2 or x> CENTER + ROAD_WIDTH//2:
                     pygame.draw.line(screen ,LINE, (x,y),(X+20,y),2)
-               x+=40
-                                   
+               x+=40                    
 def signal_color(lane_name):
-     if controller.active_lane==lane_name:
-          return Green if controller.blonk_state else RED
-     return RED
-
+     return GREEN if controller.active_lane == lane_name else RED
 def draw_signals():
-     pygame.draw.circle(screen, signal_color("AL2"), (CENTER - 30, CENTER - 90),10)
-     pygame.draw.circle(screen, signal_color("BL2"),(CENTER + 30, CENTER + 90), 10)
-     pygame.draw.circle(screen, signal_color("CL2"),(CENTER + 90, CENTER - 30), 10)
-     pygame.draw.circle(screen, signal_color("DL2"),(CENTER - 90, CENTER + 30), 10)
+     pygame.draw.circle(screen, signal_color("AL2"), (CENTER - 40, CENTER - 100),10)
+     pygame.draw.circle(screen, signal_color("BL2"),(CENTER + 40, CENTER + 100), 10)
+     pygame.draw.circle(screen, signal_color("CL2"),(CENTER + 100, CENTER - 40), 10)
+     pygame.draw.circle(screen, signal_color("DL2"),(CENTER - 100, CENTER + 40), 10)
 
 def draw_vehicles():
      for i in range(controller.lanes["AL2"].size()):
-          pygame.draw.rect(screen, CAR, (CENTER - 20, CENTER - 120 - i*CAR_GAP , 25, 40))
+          lane= i % LANES_PER_ROAD
+          x= CENTER - ROAD_WIDTH //2 + lane *( LANE_WIDTH+ LANE_GAP)+ 5
+          y= CENTER -120 - ( i // LANES_PER_ROAD)*CAR_GAP
+          pygame.draw.rect(screen,car,(x,y,25,40))
 
      for i in range(controller.lanes["BL2"].size()):
           pygame.draw.rect(screen, CAR, (CENTER + 5, CENTER +80 + i*CAR_GAP, 25, 40))
