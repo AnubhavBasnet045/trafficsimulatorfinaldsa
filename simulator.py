@@ -20,11 +20,54 @@ FREE_RIGHT_CAR=(255,100,0)
 #----BACKEND---------
 
 class lane:
-     def __init__(self, name, direction, base_priority=1):
-          self.name=name
-          self.queue=deque()
+     def __init__(self, direction,lane_index):
           self.direction= direction
-          self.base_priority = base_priority
+          self.lane_index=lane_index
+          self.speed = 2
+          self.width, self.height =(28, 45) if direction in ['N','S'] else (45, 28)
+
+#----------position logic-----------------
+          if direction =='N':
+               self.x=(CENTER + ROAD_WIDTH //2)-((2-lane_index)*LANE_WIDTH)-40
+               self.y=-50
+          elif direction =='S':
+               self.x=(CENTER- ROAD_WIDTH //2)+((2-lane_index)*LANE_WIDTH)+ 10
+               self.y = HEIGHT + 50
+          elif direction =='E':
+               self.y =(CENTER + ROAD_WIDTH//2)-((2-lane_index)*LANE_WIDTH)-40
+               self.x = WIDTH + 50
+          elif direction =='W':
+               self.y =(CENTER - ROAD_WIDTH//2)+((2-lane_index)*LANE_WIDTH)+10
+               self.x = -50          
+     
+     def move ( self , is_green, lead_veh):
+          if self.lane_index ==2:
+               self._execute_free_right()
+               return 
+          
+          stop = False
+          if not is_green:
+               if self.direction =='N'and CENTER - STOP_DIST <self.y+self.height<CENTER -STOP_DIST + 10 : stop = True
+               elif self.direction =='S'and CENTER + STOP_DIST -10<self.y< CENTER +STOP_DIST: stop = True
+               elif self.direction =='E'and CENTER + STOP_DIST -10<self.x< CENTER +STOP_DIST: stop = True
+               elif self.direction == 'W'and CENTER - STOP_DIST < self.x +self.width < CENTER- STOP_DIST+ 10: stop = True
+
+          if lead_veh:
+               dist =0
+               if self.direction =='N': dist = lead_veh.y - ( self.y + self. height)
+               elif self.direction =='S': dist = self.y -(lead_veh.y+lead_veh.height)
+               elif self.direction ==' E': dist = self.x - (lead_veh.x+lead_veh.width)
+               elif self.direction =='W': dist = lead_veh.x- (self.x+ self.width)
+               if 0 < dist< 30 : stop = True
+
+          if not stop :
+               if self.direction =='N': self.y += self.speed
+               elif self.direction =='S': self.y -=self.speed
+               elif self.direction =='E': self.x -= self.speed
+               elif self.direction =='W':self.x += self.speed
+                    
+
+
 
 
           def add_vehicle(self):
