@@ -1,8 +1,22 @@
 import pygame
 import sys
 import random
-from collections import deque
 import heapq
+#----------------------(main)-------------
+WIDTH, HEIGHT = 900,900
+CENTER = WIDTH //2
+ROAD_WIDTH= 300
+LANE_WIDTH = 50
+STOP_DIST=170
+
+#COLORS
+GRASS=(75,125,75)
+ROAD=(30,30,30)
+LINE_COLOR =( 240,240,240)
+RED, GREEN = (255,60,60),(60,255,60)
+STRAIGHT_CAR=(70,130,255)
+FREE_RIGHT_CAR=(255,100,0)
+
 #----BACKEND---------
 
 class lane:
