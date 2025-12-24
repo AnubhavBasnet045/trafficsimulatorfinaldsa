@@ -65,9 +65,34 @@ class lane:
                elif self.direction =='S': self.y -=self.speed
                elif self.direction =='E': self.x -= self.speed
                elif self.direction =='W':self.x += self.speed
-                    
+     def _execute_free_right(self):
+          tp= 145
+          if self.direction == 'N':
+               if self.y<CENTER - tp : self.y+=self.speed
+               else:self.x+=self.speed; self.width, self.height= 45,28
+          elif self.direction=='S':
+               if self.y>CENTER + tp : self.y -= self.speed
+               else: self.x-=self.speed; self.width, self.height = 45,28
+          elif self.direction=='E':
+               if self.x>CENTER + tp : self.x -= self.speed
+               else: self.y += self.speed; self.width, self.height = 28,45
+          elif self.direction == 'W':
+               if self.x<CENTER - tp : self.x += self.speed
+               else: self.y-=self.speed; self.width, self.height = 28,45
 
+     class TrafficController:
+          def __init__(self):
+               self.lanes={d:{0:[],1:[],2:[]}for d in [ 'N','S','E','W']}
+               self.active_dir='N'
+               self.timer=0
 
+          def update(self):
+               self.timer+=1
+
+               if random.random()<0.05:
+                    d=random.choice(['N','S','E','W'])
+                    l=random.choice([0,1,2])
+                    self.lanes[d][l].append(Vehicle(d,l))                             
 
 
           def add_vehicle(self):
