@@ -19,7 +19,7 @@ FREE_RIGHT_CAR=(255,100,0)
 
 #----BACKEND---------
 
-class lane:
+class Vehicle:
      def __init__(self, direction,lane_index):
           self.direction= direction
           self.lane_index=lane_index
@@ -113,8 +113,51 @@ class lane:
                                    v.move(self.active_dir==d,lead)
 
                               self.lanes[d][l]=[v for v in self.lanes[d][l] if - 120< v.x<WIDTH+120 and -120< v.y< HEIGHT + 120]
-                              
+
 #-------FRONTEND----------
+def draw_simulation(screen,ctrl):
+     screen.fill(GRASS)
+
+     # Roads
+
+     pygame.draw.rect(screen,ROAD,(CENTER- ROAD_WIDTH//2,0,ROAD_WIDTH,HEIGHT))
+     pygame.draw.rect(screen,ROAD,(0, CENTER - ROAD_WIDTH//2,WIDTH,ROAD_WIDTH))
+
+     #divider
+     pygame.draw.line(screen,(255, 215,0),(CENTER,0),(CENTER, HEIGHT),3)
+     pygame.draw.line(screen,(255,215,0),(0, CENTER),(WIDTH,CENTER),3)
+     
+     #DRAW lane dashes
+     for i in [-1,1]:
+          for pos in range(0,900,40):
+               pygame.draw.line(screen, LINE_COLOR,(CENTER + i*50,pos),(CENTER + i*50,pos+20),1)
+               pygame.draw.line(screen,LINE_COLOR,(pos, CENTER + i*50),(pos+20, CENTER+ i*50),1)
+
+      #draw signal
+
+     sig_pos={'N':(CENTER+170,CENTER-170),'S':(CENTER -170,CENTER+170),'E':(CENTER+ 170,CENTER + 170),'W':(CENTER - 170,CENTER - 170)}
+     for d, p in sig_pos.items():
+          color=GREEN if ctrl.active_dir==d else RED
+          pygame.draw.circle(screen, color,p,20)
+
+     #draw vehicle
+     for d in ctrl.lanes:
+          for l in ctrl.lanes[d]:
+               for v in ctrl.lanes[d][l]:
+                    color = FREE_RIGHT_CAR if v.lane_index ==2 else STRAIGHT_CAR
+                    pygame.draw.rect(screen, color,(v.x , v.y, v.width, v.height), border_radius=4)
+
+
+
+
+
+
+
+
+
+
+
+
 pygame.init()
 screen=pygame.display.set_mode((900,900))
 pygame.display.set_caption("Traffic Junction")
