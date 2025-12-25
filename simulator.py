@@ -147,6 +147,16 @@ def draw_simulation(screen,ctrl):
                     color = FREE_RIGHT_CAR if v.lane_index ==2 else STRAIGHT_CAR
                     pygame.draw.rect(screen, color,(v.x , v.y, v.width, v.height), border_radius=4)
 
+#main loop
+
+def main():
+     pygame.init()
+     screen=pygame.display.set_mode((WIDTH,HEIGHT))
+     pygame.display.set_caption("Priority Traffic - Right Centric System")
+     clock = pygame.time.Clock()
+
+     ctrl = TrafficController()
+     
 
 
 
@@ -158,27 +168,7 @@ def draw_simulation(screen,ctrl):
 
 
 
-pygame.init()
-screen=pygame.display.set_mode((900,900))
-pygame.display.set_caption("Traffic Junction")
-clock=pygame.time.Clock()
 
-WHITE=(255,255,255)
-ROAD=(40,40,40)
-JUNCTION=(70,70,70)
-LINE=(255,255,255)
-RED=(220,60,60)
-GREEN=(60,200,60)
-CAR=(30,30,200)
-
-controller =TrafficController()
-
-CENTER=450
-LANES_PER_ROADS=3
-LANE_WIDTH=40
-LANES_GAP=10
-ROAD_WIDTH=LANES_PER_RAOD * LANE_WIDTH + (LANES_PER_ROAD -1)* LANES_GAP
-CAR_GAP=45
 
 def draw_roads():
      pygame.draw.rect(screen, ROAD, (CENTER - ROAD_WIDTH//2,0, ROAD_WIDTH, 900))
