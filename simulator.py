@@ -92,77 +92,28 @@ class lane:
                if random.random()<0.05:
                     d=random.choice(['N','S','E','W'])
                     l=random.choice([0,1,2])
-                    self.lanes[d][l].append(Vehicle(d,l))                             
+                    self.lanes[d][l].append(Vehicle(d,l))     
+                    
+     #Priority queue logic
 
+               if self.timer >240 or (len(self.lanes[self.active_dir][0])+len(self.lanes[self.active_dir][1])==0):
+                    self.timer=0
+                    pq=[]
+                    for d in ['N','S','E','W']:
+                         waiting =len(self.lanes[d][0])+len(self.lanes[d][1])
+                         heapq.heappush(pq,(-waiting,d))
 
-          def add_vehicle(self):
-               self.queue.append(1)
-     def serve(self, count):
-        for _ in range(min(count, len(self.queue))):
-            self.queue.popleft()
+                    if pq:
+                         self.active_dir=heapq.heapq.heappop(pq)[1]
 
-            def size(self):
-                 return len(self.queue)
-            
+                    for d in ['N','S','E','W']:
+                         for l in [0,1,2]:
+                              for i , v in enumerate(self.lanes[d][l]):
+                                   lead=self.lanes[d][l][i-1] if i>0 else None 
+                                   v.move(self.active_dir==d,lead)
 
-class TrafficController:
-     def __init__(self):
-          self.lanes={
-               "AL2": Lane("AL2","down" ,base_priority=2),
-               "BL2": Lane("BL2", "up"),
-               "CL2": Lane("Cl2", "left"),
-               "Dl2": Lane("Dl2", "right"),
-          }
-
-         
-          self.arrival_counter=0
-
-          self.priority_heap=[]
-          self.threshold_reached=set()
-
-          self.active_lane= None
-
-
-
-     def generate_traffic(self):
-          for name, lane in self.lanes.items():
-
-               if name== self.active_lane:
-                    continue
-               if random.random() < 0.6:
-                    lane.add_vehicle()
-
-               if lane.size()== 10 and name not in self.threshold_reached:
-                    self.arrival_counter += 1
-                    priority=lane.size()+ lane.base_priority *5
-
-                    heapq.heappush(
-                         self.priority_heap,
-                         (-priority, self.arrival_counter, name)
-                    )          
-
-                    self.threshold_reached.add(name)
-     def choose_lane(self):
-          if self.active_lane:
-               return self.active_lane
-
-          if self.priority_heap:
-               _, _, lane_name = heapq.heappop(self.priority_heap)
-               self.active_lane=lane_name
-               return lane_name
-
-          return None           
-     def serve_traffic (self):
-          lane_name=self.choose_lane()
-          if not lane_name:
-               return
-
-          lane = self.lanes[lane_name]
-          lane.serve(3)
-
-          if lane.size()==0:
-               self.active_lane= None    
-                
+                              self.lanes[d][l]=[v for v in self.lanes[d][l] if - 120< v.x<WIDTH+120 and -120< v.y< HEIGHT + 120]
+                              
 #-------FRONTEND----------
 pygame.init()
 screen=pygame.display.set_mode((900,900))
