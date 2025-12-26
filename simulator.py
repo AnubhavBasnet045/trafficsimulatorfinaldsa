@@ -2,6 +2,8 @@ import pygame
 import sys
 import random
 import heapq
+
+
 #----------------------(main)-------------
 WIDTH, HEIGHT = 900,900
 CENTER = WIDTH //2
@@ -20,52 +22,52 @@ FREE_RIGHT_CAR=(255,100,0)
 #----BACKEND---------
 
 class Vehicle:
-     def __init__(self, direction,lane_index):
-          self.direction= direction
-          self.lane_index=lane_index
-          self.speed = 2
-          self.width, self.height =(28, 45) if direction in ['N','S'] else (45, 28)
+    def __init__(self, direction,lane_index):
+        self.direction= direction
+        self.lane_index=lane_index
+        self.speed = 2
+        self.width, self.height =(28, 45) if direction in ['N','S'] else (45, 28)
 
 #----------position logic-----------------
-          if direction =='N':
+        if direction =='N':
                self.x=(CENTER + ROAD_WIDTH //2)-((2-lane_index)*LANE_WIDTH)-40
                self.y=-50
-          elif direction =='S':
+        elif direction =='S':
                self.x=(CENTER- ROAD_WIDTH //2)+((2-lane_index)*LANE_WIDTH)+ 10
                self.y = HEIGHT + 50
-          elif direction =='E':
+        elif direction =='E':
                self.y =(CENTER + ROAD_WIDTH//2)-((2-lane_index)*LANE_WIDTH)-40
                self.x = WIDTH + 50
-          elif direction =='W':
+        elif direction =='W':
                self.y =(CENTER - ROAD_WIDTH//2)+((2-lane_index)*LANE_WIDTH)+10
                self.x = -50          
      
-     def move ( self , is_green, lead_veh):
-          if self.lane_index ==2:
+    def move ( self , is_green, lead_veh):
+         if self.lane_index ==2:
                self._execute_free_right()
                return 
           
-          stop = False
-          if not is_green:
+         stop = False
+         if not is_green:
                if self.direction =='N'and CENTER - STOP_DIST <self.y+self.height<CENTER -STOP_DIST + 10 : stop = True
                elif self.direction =='S'and CENTER + STOP_DIST -10<self.y< CENTER +STOP_DIST: stop = True
                elif self.direction =='E'and CENTER + STOP_DIST -10<self.x< CENTER +STOP_DIST: stop = True
                elif self.direction == 'W'and CENTER - STOP_DIST < self.x +self.width < CENTER- STOP_DIST+ 10: stop = True
 
-          if lead_veh:
+         if lead_veh:
                dist =0
                if self.direction =='N': dist = lead_veh.y - ( self.y + self. height)
                elif self.direction =='S': dist = self.y -(lead_veh.y+lead_veh.height)
-               elif self.direction ==' E': dist = self.x - (lead_veh.x+lead_veh.width)
+               elif self.direction =='E': dist = self.x - (lead_veh.x+lead_veh.width)
                elif self.direction =='W': dist = lead_veh.x- (self.x+ self.width)
                if 0 < dist< 30 : stop = True
 
-          if not stop :
+         if not stop :
                if self.direction =='N': self.y += self.speed
                elif self.direction =='S': self.y -=self.speed
                elif self.direction =='E': self.x -= self.speed
                elif self.direction =='W':self.x += self.speed
-     def _execute_free_right(self):
+    def _execute_free_right(self):
           tp= 145
           if self.direction == 'N':
                if self.y<CENTER - tp : self.y+=self.speed
@@ -80,7 +82,7 @@ class Vehicle:
                if self.x<CENTER - tp : self.x += self.speed
                else: self.y-=self.speed; self.width, self.height = 28,45
 
-     class TrafficController:
+class TrafficController:
           def __init__(self):
                self.lanes={d:{0:[],1:[],2:[]}for d in [ 'N','S','E','W']}
                self.active_dir='N'
@@ -104,9 +106,9 @@ class Vehicle:
                          heapq.heappush(pq,(-waiting,d))
 
                     if pq:
-                         self.active_dir=heapq.heapq.heappop(pq)[1]
+                         self.active_dir=heapq.heappop(pq)[1]
 
-                    for d in ['N','S','E','W']:
+               for d in ['N','S','E','W']:
                          for l in [0,1,2]:
                               for i , v in enumerate(self.lanes[d][l]):
                                    lead=self.lanes[d][l][i-1] if i>0 else None 
@@ -150,29 +152,26 @@ def draw_simulation(screen,ctrl):
 #main loop
 
 def main():
-     pygame.init()
-     screen=pygame.display.set_mode((WIDTH,HEIGHT))
-     pygame.display.set_caption("Priority Traffic - Right Centric System")
-     clock = pygame.time.Clock()
-     ctrl = TrafficController()
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Priority Traffic - Right Centric System")
+    clock = pygame.time.Clock()
+    ctrl = TrafficController()
 
-     while True:
-          for event in pygame.event.get():
-               if event.type ==pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
-                    
-          ctrl.update()
-          draw_simulation(screen,ctrl)
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
 
-          pygame.display.flip()
-          clock.tick(60)
-          if __name__  == "__main__":
-               main()             
+        ctrl.update() # Update Physics/Priority
+        draw_simulation(screen, ctrl) # Render Graphics
+        
+        pygame.display.flip()
+        clock.tick(60)
 
-
-
-
+if __name__ == "__main__":
+    main()        
 
 
 
