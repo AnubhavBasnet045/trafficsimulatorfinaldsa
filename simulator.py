@@ -154,9 +154,21 @@ def main():
      screen=pygame.display.set_mode((WIDTH,HEIGHT))
      pygame.display.set_caption("Priority Traffic - Right Centric System")
      clock = pygame.time.Clock()
-
      ctrl = TrafficController()
-     
+
+     while True:
+          for event in pygame.event.get():
+               if event.type ==pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+          ctrl.update()
+          draw_simulation(screen,ctrl)
+
+          pygame.display.flip()
+          clock.tick(60)
+          if __name__  == "__main__":
+               main()             
 
 
 
@@ -170,51 +182,4 @@ def main():
 
 
 
-def draw_roads():
-     pygame.draw.rect(screen, ROAD, (CENTER - ROAD_WIDTH//2,0, ROAD_WIDTH, 900))
-     pygame.draw.rect(screen, ROAD, (0, CENTER - ROAD_WIDTH//2, 900, ROAD_WIDTH))
-     pygame.draw.rect(
-          screen, JUNCTION,
-          (CENTER -ROAD_WIDTH//2, CENTER - ROAD_WIDTH//2, ROAD_WIDTH, ROAD_WIDTH)
-     )
-def draw_lane_lines():
-     for i in range(1, LANES_PER_ROAD):
-          x=CENTER - ROAD_WIDTH//2 + i* ( LANE_WIDTH + LANE_GAP)-LANE_GAP//2
-          y=0
-          while y <900:
-               if y< CENTER - ROAD_WIDTH //2 or y > CENTER + ROAD_WIDTH//2:
-                    pygame.draw.line(screen, LINE, (x,y),(x, y+20),2)
-               y+=40
-     for i in range(1, Lanes_PER_ROAD):
-          y=CENTER- ROAD_WIDTH//2 + i* (LANE_WIDTH + LANE_GAP)-LANE_GAP//2
-          x=0
-          while x<900:
-               if x< CENTER -ROAD_WIDTH //2 or x> CENTER + ROAD_WIDTH//2:
-                    pygame.draw.line(screen ,LINE, (x,y),(X+20,y),2)
-               x+=40                    
-def signal_color(lane_name):
-     return GREEN if controller.active_lane == lane_name else RED
-def draw_signals():
-     pygame.draw.circle(screen, signal_color("AL2"), (CENTER - 40, CENTER - 100),10)
-     pygame.draw.circle(screen, signal_color("BL2"),(CENTER + 40, CENTER + 100), 10)
-     pygame.draw.circle(screen, signal_color("CL2"),(CENTER + 100, CENTER - 40), 10)
-     pygame.draw.circle(screen, signal_color("DL2"),(CENTER - 100, CENTER + 40), 10)
 
-def draw_vehicles():
-     for i in range(controller.lanes["AL2"].size()):
-          lane= i % LANES_PER_ROAD
-          x= CENTER - ROAD_WIDTH //2 + lane *( LANE_WIDTH+ LANE_GAP)+ 5
-          y= CENTER -120 - ( i // LANES_PER_ROAD)*CAR_GAP
-          pygame.draw.rect(screen,car,(x,y,25,40))
-
-     for i in range(controller.lanes["BL2"].size()):
-          pygame.draw.rect(screen, CAR, (CENTER + 5, CENTER +80 + i*CAR_GAP, 25, 40))
-
-     for i in range( controller.lanes["CL2"].size()):
-          pygame.draw.rect(screen, CAR, (CENTER + 80 + i*CAR_GAP, CENTER - 20, 40 , 25))
-
-     for i in range(controller.lanes["DL2"].size()):
-          pygame.draw.rect(screen, CAR, (CENTER - 120 - i*CAR_GAP, CENTER + 5, 40 , 25)) 
-
-            
-     
