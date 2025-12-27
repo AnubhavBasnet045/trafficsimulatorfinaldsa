@@ -51,7 +51,14 @@ The direction with the maximum score is selected using a Max-Priority Queue impl
 The selected direction turns green, and vehicle move according to FIFO order within their specific lane queues.
 
 
+**TIME COMPLEXITY ANALYSIS**
+1. Vehicle Spawn--O(1)--Adding a vehicle to the end of a list is a constant time operation.
 
+2. Collision Check -- O(N) -- In each frame, every vehicle checks the position of the one vehicle directly in    front ot it. Since there are N total vehicles, this is linear.
+
+3. Priority Switching -- O(D log D) -- Where D is the number of direction . Building the heap and popping the max takes logarithmic time relative to directions.
+
+4. Total frame updates -- O(N)--Since D is a small constant, the overall time complexity per frame is dominated by the number of vehicle N corrently on the screen.
 
 
 **SOURCE CODE:**
@@ -60,3 +67,4 @@ https://github.com/AnubhavBasnet045/trafficsimulatorfinaldsa.git
 
 
    
+<video controls src="Screen Recording 2025-12-27 at 11.27.57 AM.mov" title="Title"></video>
