@@ -1,9 +1,9 @@
 **TRAFFIC INSERTION SIMULATION: DOCUMENTATION**
 
 **TITLE**
-.Assignment:Priority-Based Traffic Simulation system
-.Name: Anubhav Basnet
-.Roll Number: 09
+1.Assignment:Priority-Based Traffic Simulation system
+2.Name: Anubhav Basnet
+3.Roll Number: 09
 
 **SUMMARY OF WORK**
 I have developed a real- time traffic insertion simulator using Python and Pygame. 
