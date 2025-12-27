@@ -67,4 +67,3 @@ https://github.com/AnubhavBasnet045/trafficsimulatorfinaldsa.git
 
 
    
-<video controls src="Screen Recording 2025-12-27 at 11.27.57 AM.mov" title="Title"></video>
