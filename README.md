@@ -75,13 +75,13 @@ The selected direction turns green, and vehicle move according to FIFO order wit
 
 **Installation Steps**
 Windows / macOS / Linux (Python):
-'''bash
+```bash
 # Ensure you have Python installed
 python --version
 
 # Install Pygame library
 pip install pygame
-'''
+```
 
 ## SOURCE CODE:
 
